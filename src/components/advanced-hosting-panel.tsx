@@ -141,7 +141,7 @@ export default function AdvancedHostingPanel({ generatedCode, projectName, onHos
       }
     } catch (error) {
       console.error('Deployment error:', error)
-      alert(`Deployment failed: ${error.message}`)
+      alert(`Deployment failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {
       setIsDeploying(false)
     }

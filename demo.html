@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Website Builder - Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 50px 0;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .demo-section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-size: 16px;
+            backdrop-filter: blur(5px);
+        }
+        
+        input::placeholder, textarea::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        button {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .preview {
+            margin-top: 30px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            min-height: 400px;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .feature {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .feature h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 AI Website Builder</h1>
+            <p>Create stunning websites with AI - No coding required!</p>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Try the Demo (Works Offline!)</h2>
+            <div class="input-group">
+                <label for="projectName">Project Name:</label>
+                <input type="text" id="projectName" placeholder="My Awesome Website">
+            </div>
+            
+            <div class="input-group">
+                <label for="prompt">Describe your website:</label>
+                <textarea id="prompt" rows="4" placeholder="A modern portfolio website for a graphic designer with a dark theme, project showcase, and contact form"></textarea>
+            </div>
+            
+            <button onclick="generateWebsite()">✨ Generate Website</button>
+            
+            <div class="preview" id="preview" style="display: none;">
+                <iframe id="websiteFrame"></iframe>
+            </div>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <h3>🤖 AI-Powered</h3>
+                <p>Describe your website and watch AI create it instantly</p>
+            </div>
+            <div class="feature">
+                <h3>📱 Responsive</h3>
+                <p>Works perfectly on all devices and screen sizes</p>
+            </div>
+            <div class="feature">
+                <h3>🎨 Beautiful</h3>
+                <p>Modern designs with smooth animations and effects</p>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>🚀 Want the Full Version?</h2>
+            <p>This is just a demo! The full version includes:</p>
+            <ul style="margin: 20px 0; padding-left: 20px;">
+                <li>Real AI integration with multiple providers</li>
+                <li>Code editor with syntax highlighting</li>
+                <li>Project saving and management</li>
+                <li>Export functionality</li>
+                <li>User authentication</li>
+                <li>And much more!</li>
+            </ul>
+            <p><strong>Setup Instructions:</strong></p>
+            <ol style="margin: 20px 0; padding-left: 20px;">
+                <li>Install Node.js from <a href="https://nodejs.org" style="color: #ffd700;">nodejs.org</a></li>
+                <li>Run <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">run.bat</code> (Windows) or <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">bash run.sh</code> (Mac/Linux)</li>
+                <li>Open http://localhost:3000</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        // Real AI Website Generator using Gemini API
+        async function generateWebsite() {
+            const projectName = document.getElementById('projectName').value || 'Demo Website';
+            const prompt = document.getElementById('prompt').value || 'A beautiful modern website';
+
+            // Show loading state
+            const button = document.querySelector('button');
+            const originalText = button.textContent;
+            button.textContent = '🤖 Generating with AI...';
+            button.disabled = true;
+
+            try {
+                // Call real AI API
+                const websiteHTML = await callGeminiAPI(prompt, projectName);
+
+                // Display the generated website
+                displayWebsite(websiteHTML, projectName);
+
+            } catch (error) {
+                console.error('AI Generation failed:', error);
+                // Fallback to demo generator
+                const websiteHTML = generateDemoWebsite(prompt, projectName);
+                displayWebsite(websiteHTML, projectName);
+
+                // Show error message
+                alert('⚠️ AI generation failed, showing demo version. Check your API key in .env.local');
+            } finally {
+                // Reset button
+                button.textContent = originalText;
+                button.disabled = false;
+            }
+        }
+
+        // Real AI API call to Gemini
+        async function callGeminiAPI(prompt, projectName) {
+            const response = await fetch('/api/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    prompt: prompt,
+                    projectName: projectName
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`API call failed: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data.html;
+        }
+
+        // Fallback demo generator
+        function generateDemoWebsite(prompt, projectName) {
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+            const websiteHTML = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${projectName}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, ${randomColor}, #764ba2);
+            color: white;
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .hero {
+            text-align: center;
+            padding: 100px 0;
+            animation: fadeIn 1s ease-out;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .hero p { font-size: 1.2rem; margin-bottom: 30px; opacity: 0.9; }
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        .btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover { transform: translateY(-10px); }
+        .feature-card h3 { font-size: 1.5rem; margin-bottom: 15px; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .features { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>✨ ${projectName}</h1>
+            <p>This website was created based on: "${prompt}"</p>
+            <a href="#features" class="btn">Explore Features</a>
+        </div>
+        
+        <div id="features" class="features">
+            <div class="feature-card">
+                <h3>🚀 Fast & Modern</h3>
+                <p>Built with cutting-edge web technologies for optimal performance.</p>
+            </div>
+            <div class="feature-card">
+                <h3>📱 Responsive Design</h3>
+                <p>Looks amazing on all devices - desktop, tablet, and mobile.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎨 Beautiful UI</h3>
+                <p>Carefully crafted design with attention to every detail.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>`;
+            
+            return websiteHTML;
+        }
+
+        // Display generated website
+        function displayWebsite(websiteHTML, projectName) {
+            const iframe = document.getElementById('websiteFrame');
+            iframe.srcdoc = websiteHTML;
+            document.getElementById('preview').style.display = 'block';
+
+            // Add download button
+            addDownloadButton(websiteHTML, projectName);
+
+            // Scroll to preview
+            document.getElementById('preview').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Add download functionality
+        function addDownloadButton(websiteHTML, projectName) {
+            // Remove existing download button if any
+            const existingBtn = document.getElementById('downloadBtn');
+            if (existingBtn) existingBtn.remove();
+
+            // Create download button
+            const downloadBtn = document.createElement('button');
+            downloadBtn.id = 'downloadBtn';
+            downloadBtn.innerHTML = '💾 Download HTML';
+            downloadBtn.style.cssText = `
+                margin: 20px 0;
+                padding: 12px 24px;
+                background: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background 0.3s ease;
+            `;
+
+            downloadBtn.onmouseover = () => downloadBtn.style.background = '#45a049';
+            downloadBtn.onmouseout = () => downloadBtn.style.background = '#4CAF50';
+
+            downloadBtn.onclick = () => {
+                const blob = new Blob([websiteHTML], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${projectName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.html`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            };
+
+            // Insert download button before preview
+            const preview = document.getElementById('preview');
+            preview.parentNode.insertBefore(downloadBtn, preview);
+        }
+    </script>
+</body>
+</html>

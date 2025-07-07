@@ -108,7 +108,7 @@ export default function GitHubIntegration({ projectName, generatedCode }: GitHub
         throw new Error(result.error)
       }
     } catch (error) {
-      alert(`Failed to create repository: ${error.message}`)
+      alert(`Failed to create repository: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {
       setIsCreatingRepo(false)
     }

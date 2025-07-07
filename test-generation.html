@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bella's Italian Restaurant</title>
+<style>
+:root {
+  --primary-color: #E07A5F;
+  --secondary-color: #A0522D;
+  --accent-color: #DC143C;
+  --text-color: #333;
+  --bg-color: #f5f5f5;
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Roboto', sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.hero {
+  background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 100px 0;
+  text-align: center;
+}
+
+.hero h1 {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+}
+
+.menu-item {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.menu-item:hover {
+  transform: translateY(-5px);
+}
+
+.menu-item img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.menu-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+
+footer {
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 3rem;
+  }
+  .hero p {
+    font-size: 1rem;
+  }
+  .menu-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Animations */
+.animated-element {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.animated-element.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+<nav>
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Menu</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <h1>Exceptional Dining Experience Awaits</h1>
+  <p>Experience culinary artistry with our chef-crafted dishes made from the finest local ingredients.</p>
+  <button>Reserve Your Table</button>
+</section>
+
+<section class="menu">
+  <h2>Our Menu</h2>
+  <div class="menu-section">
+    <div class="menu-item">
+      <img src="salmon.jpg" alt="Grilled Salmon">
+      <h3>Grilled Salmon</h3>
+      <p>$28</p>
+      <p>Fresh Atlantic salmon with seasonal vegetables</p>
+    </div>
+    <div class="menu-item">
+      <img src="steak.jpg" alt="Ribeye Steak">
+      <h3>Ribeye Steak</h3>
+      <p>$35</p>
+      <p>Prime cut ribeye with garlic mashed potatoes</p>
+    </div>
+    </div>
+</section>
+
+<section class="about">
+  <h2>About Bella's</h2>
+  <p>We are a passionate restaurant dedicated to creating exceptional dining experiences. Our commitment to fresh, locally-sourced ingredients and innovative culinary techniques has made us a beloved destination for food enthusiasts.</p>
+</section>
+
+<footer>
+  <p>&copy; 2023 Bella's Italian Restaurant</p>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('show');
+    }
+  });
+});
+
+const animatedElements = document.querySelectorAll('.animated-element');
+animatedElements.forEach(element => observer.observe(element));
+</script>
+</body>
+</html>

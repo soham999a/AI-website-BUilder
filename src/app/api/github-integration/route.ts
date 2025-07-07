@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('GitHub integration error:', error)
     return NextResponse.json(
-      { error: 'GitHub integration failed', details: error.message },
+      { error: 'GitHub integration failed', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     )
   }

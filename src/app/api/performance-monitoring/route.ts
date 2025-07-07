@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Performance monitoring error:', error)
     return NextResponse.json(
-      { error: 'Performance monitoring failed', details: error.message },
+      { error: 'Performance monitoring failed', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     )
   }
@@ -83,8 +83,8 @@ async function analyzePerformance(url: string) {
 async function optimizeSEO(code: string) {
   const seoAnalysis = {
     score: Math.floor(Math.random() * 20) + 75, // 75-95
-    issues: [],
-    recommendations: [],
+    issues: [] as Array<{type: string, severity: string, message: string}>,
+    recommendations: [] as string[],
     optimizedCode: code
   }
 

@@ -28,6 +28,8 @@ interface DeploymentResult {
   status: string
   isDemo?: boolean
   message?: string
+  provider?: string
+  gistUrl?: string
 }
 
 export default function HostingPanel({ generatedCode, projectName, onHostingComplete }: HostingPanelProps) {
@@ -70,7 +72,7 @@ export default function HostingPanel({ generatedCode, projectName, onHostingComp
       }
     } catch (error) {
       console.error('Deployment error:', error)
-      alert(`Deployment failed: ${error.message}`)
+      alert(`Deployment failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {
       setIsDeploying(false)
     }

@@ -19,18 +19,18 @@ export async function POST(request: NextRequest) {
     // TODO: Implement Vercel deployment when premium features are ready
     // Deploy to user's Vercel account
     // const deployment = await deployToUserVercel(html, projectName, userToken)
-    
-    return NextResponse.json({
-      success: true,
-      url: deployment.url,
-      deploymentId: deployment.id,
-      status: deployment.status
-    })
+    //
+    // return NextResponse.json({
+    //   success: true,
+    //   url: deployment.url,
+    //   deploymentId: deployment.id,
+    //   status: deployment.status
+    // })
 
   } catch (error) {
     console.error('Deployment error:', error)
     return NextResponse.json(
-      { error: 'Deployment failed', details: error.message },
+      { error: 'Deployment failed', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     )
   }
