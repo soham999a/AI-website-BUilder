@@ -79,7 +79,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-**Made with ❤️ by AI Website Builder Pro team**
+
    ```bash
    npm install
    # or
